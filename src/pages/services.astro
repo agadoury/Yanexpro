@@ -1,0 +1,138 @@
+---
+/**
+ * PAGE SERVICES — https://yanexpro.com/services/
+ *
+ * La liste complète des services est générée depuis `src/data/business.ts`
+ * (tableau `services`). Pour ajouter ou modifier un service, éditez ce
+ * fichier de données : la page se met à jour automatiquement.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { business, services } from '../data/business';
+---
+
+<Layout
+  title="Services de mécanique automobile à Varennes | Yanexpro"
+  description="Entretien selon les normes des constructeurs, freins, suspension, pneus, alignement, climatisation, diagnostic électronique, inspection pré-achat et plus, à Varennes. ☎ 450 652-2121"
+>
+  <PageHero
+    eyebrow="Nos services"
+    title="Tout ce qu’il faut pour garder votre véhicule en pleine forme"
+    intro="De la vidange d’huile à la réparation majeure, nos techniciens entretiennent votre véhicule selon les normes et directives des constructeurs — votre garantie demeure pleinement valide."
+  />
+
+  <section class="section" aria-label="Liste des services">
+    <div class="container">
+      <div class="card-grid">
+        {
+          services.map((s) => (
+            <article class="card">
+              <span class="icon-chip">
+                <Icon name={s.icon} size={24} />
+              </span>
+              <h2 class="card-title">{s.title}</h2>
+              <p>{s.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="garantie-titre">
+    <div class="container warranty-split">
+      <div>
+        <span class="eyebrow">Bon à savoir</span>
+        <h2 id="garantie-titre">
+          Votre garantie de constructeur reste valide chez nous
+        </h2>
+        <p>
+          La loi vous permet de faire entretenir votre véhicule neuf ailleurs
+          que chez le concessionnaire, à condition de respecter le calendrier
+          d’entretien du fabricant. C’est exactement ce que nous faisons :
+          chaque intervention suit les normes et directives du constructeur, et
+          vous repartez avec les preuves d’entretien nécessaires.
+        </p>
+        <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
+          <Icon name="phone" size={18} /> Posez-nous vos questions
+        </a>
+      </div>
+      <ul class="warranty-points">
+        <li>
+          <Icon name="shield" size={20} />
+          Entretien conforme au carnet du fabricant
+        </li>
+        <li>
+          <Icon name="clipboard" size={20} />
+          Factures détaillées comme preuves d’entretien
+        </li>
+        <li>
+          <Icon name="wrench" size={20} />
+          Pièces de qualité certifiées Bumper to Bumper
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Besoin d’un service qui n’est pas dans la liste?"
+    text={`Appelez-nous au ${business.phone.display} : si ça roule, on peut probablement s’en occuper.`}
+  />
+</Layout>
+
+<style>
+  /* Les cartes utilisent <h2> pour respecter la hiérarchie de titres
+     (h1 dans le héros → h2 pour chaque service). */
+  .card-title {
+    font-size: 1.15rem;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .warranty-split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  @media (min-width: 820px) {
+    .warranty-split {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+
+  .warranty-split h2 {
+    font-size: var(--text-lg);
+  }
+
+  .warranty-split p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .warranty-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .warranty-points li {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .warranty-points :global(svg) {
+    color: var(--color-accent-hover);
+    flex-shrink: 0;
+  }
+</style>

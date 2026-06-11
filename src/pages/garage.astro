@@ -1,0 +1,184 @@
+---
+/**
+ * PAGE NOTRE GARAGE — https://yanexpro.com/garage/
+ * Présentation de l'entreprise, de la certification Bumper to Bumper et de
+ * l'expérience client (voitures de courtoisie, salle d'attente équipée…).
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+---
+
+<Layout
+  title="Notre garage à Varennes | Yanexpro Mécanique Auto"
+  description="Découvrez le garage Yanexpro : atelier certifié Bumper to Bumper dans le parc industriel de Varennes, voitures de courtoisie, salle d'attente avec Wi-Fi et café, équipements à la fine pointe."
+>
+  <PageHero
+    eyebrow="Notre garage"
+    title="Un atelier moderne, une équipe qui a votre véhicule à cœur"
+    intro={`Fondé et dirigé par ${business.owner}, ${business.shortName} est établi dans le parc industriel de Varennes, à deux pas de la route 132. Notre mission : rester à l’affût des évolutions de l’industrie pour offrir un service à la hauteur des véhicules d’aujourd’hui.`}
+  />
+
+  <!-- Certification -->
+  <section class="section" aria-labelledby="certification-titre">
+    <div class="container cert-split">
+      <div>
+        <span class="eyebrow">Certification</span>
+        <h2 id="certification-titre">Garage certifié Bumper to Bumper</h2>
+        <p>
+          La bannière Bumper to Bumper regroupe des ateliers indépendants qui
+          s’engagent à respecter des standards élevés : pièces de qualité,
+          formation continue des techniciens et garantie sur pièces et
+          main-d’œuvre <strong>reconnue partout au Canada</strong>.
+        </p>
+        <p>
+          Concrètement, pour vous : la fiabilité d’une grande bannière, avec la
+          proximité et l’honnêteté d’un garage indépendant d’ici.
+        </p>
+      </div>
+      <div class="cert-badge" aria-hidden="true">
+        <Icon name="shield" size={64} />
+        <span>Bumper to Bumper<br /><small>Garantie pancanadienne</small></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Expérience client -->
+  <section class="section section--raised" aria-labelledby="experience-titre">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">L’expérience Yanexpro</span>
+        <h2 id="experience-titre">
+          Pensé pour que la visite au garage ne dérange pas votre journée
+        </h2>
+      </div>
+      <div class="card-grid">
+        {
+          business.amenities.map((a) => (
+            <div class="card">
+              <span class="icon-chip">
+                <Icon name={a.icon} size={24} />
+              </span>
+              <h3>{a.title}</h3>
+              <p>{a.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Valeurs -->
+  <section class="section" aria-labelledby="valeurs-titre">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Notre approche</span>
+        <h2 id="valeurs-titre">Transparence d’abord, réparation ensuite</h2>
+      </div>
+      <div class="values-grid">
+        <div>
+          <h3>On explique avant d’intervenir</h3>
+          <p>
+            Aucuns travaux sans votre accord. Nous prenons le temps de vous
+            montrer ce qui doit être fait, ce qui peut attendre, et pourquoi.
+          </p>
+        </div>
+        <div>
+          <h3>À la fine pointe de la technologie</h3>
+          <p>
+            Les véhicules évoluent vite — nos équipements de diagnostic et la
+            formation de nos techniciens suivent le rythme, des moteurs à
+            essence aux systèmes électroniques les plus récents.
+          </p>
+        </div>
+        <div>
+          <h3>Des standards de constructeur</h3>
+          <p>
+            Chaque entretien respecte les normes et directives du fabricant de
+            votre véhicule, pour préserver sa garantie et sa valeur de revente.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Venez nous rencontrer"
+    text={`${business.address.street}, ${business.address.city} — ${business.address.landmark.toLowerCase()}.`}
+  />
+</Layout>
+
+<style>
+  .cert-split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  @media (min-width: 820px) {
+    .cert-split {
+      grid-template-columns: 1.3fr 1fr;
+    }
+  }
+
+  .cert-split h2 {
+    font-size: var(--text-lg);
+  }
+
+  .cert-split p {
+    color: var(--color-text-muted);
+  }
+
+  .cert-split strong {
+    color: var(--color-text);
+  }
+
+  .cert-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    padding: clamp(2rem, 4vw, 3rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(
+        20rem 14rem at 50% 0%,
+        var(--color-accent-soft),
+        transparent
+      ),
+      var(--color-bg-raised);
+    color: var(--color-accent-hover);
+    font-weight: 750;
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .cert-badge small {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .values-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .values-grid h3 {
+    font-size: 1.1rem;
+    padding-top: 1rem;
+    border-top: 3px solid var(--color-accent);
+    display: inline-block;
+  }
+
+  .values-grid p {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,17 @@
+# ============================================================================
+# robots.txt — Yanexpro Mécanique Auto
+# ============================================================================
+# Tout le site est public : les moteurs de recherche ET les robots
+# d'intelligence artificielle (Claude, ChatGPT, Gemini, Perplexity…) sont
+# les bienvenus. C'est voulu : cela permet aux assistants IA de recommander
+# le garage avec des informations exactes.
+# ============================================================================
+
+User-agent: *
+Allow: /
+
+# Plan du site (généré automatiquement à chaque build)
+Sitemap: https://yanexpro.com/sitemap-index.xml
+
+# Résumé du site destiné aux assistants IA (standard llms.txt)
+# Voir : https://llmstxt.org/

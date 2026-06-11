@@ -1,0 +1,155 @@
+---
+/**
+ * Pied de page : coordonnées, heures d'ouverture et navigation secondaire.
+ * Toutes les informations proviennent de `src/data/business.ts` — rien à
+ * modifier ici lors d'un changement d'adresse, d'heures ou de téléphone.
+ */
+import { business } from '../data/business';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand">{business.shortName}</p>
+      <p class="footer-tagline">
+        Garage certifié Bumper to Bumper — entretien et réparation d’automobiles
+        et de camions légers à Varennes.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Coordonnées</h2>
+      <ul class="footer-list">
+        <li>
+          <Icon name="pin" size={18} />
+          <a href={business.mapsUrl} rel="noopener" target="_blank">
+            {business.address.street}, {business.address.city} ({
+              business.address.province
+            }) {business.address.postalCode}
+          </a>
+        </li>
+        <li>
+          <Icon name="phone" size={18} />
+          <a href={`tel:${business.phone.e164}`}>{business.phone.display}</a>
+        </li>
+        <li>
+          <Icon name="mail" size={18} />
+          <a href={`mailto:${business.email}`}>{business.email}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Heures d’ouverture</h2>
+      <ul class="footer-list footer-hours">
+        {
+          business.hours.display.map((slot) => (
+            <li>
+              <span>{slot.days}</span>
+              <span>{slot.hours}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Navigation</h2>
+      <ul class="footer-list">
+        <li><a href="/services/">Services</a></li>
+        <li><a href="/garage/">Notre garage</a></li>
+        <li><a href="/remorques/">Location de remorques</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-legal">
+    <p>
+      © {year} {business.name}. Tous droits réservés.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    margin-top: var(--section-pad);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    padding-bottom: 2.5rem;
+  }
+
+  .footer-brand {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-heading);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-tagline {
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    max-width: 22rem;
+  }
+
+  .footer-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .footer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+  }
+
+  .footer-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-list svg {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--color-accent-hover);
+  }
+
+  .footer-list a {
+    color: var(--color-text);
+  }
+
+  .footer-hours li {
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-legal {
+    border-top: 1px solid var(--color-border);
+    padding-block: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-legal p {
+    margin: 0;
+  }
+</style>

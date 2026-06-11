@@ -1,0 +1,228 @@
+---
+/**
+ * PAGE CONTACT — https://yanexpro.com/contact/
+ * Coordonnées complètes, heures d'ouverture, carte Google Maps intégrée.
+ *
+ * La carte utilise l'intégration publique de Google Maps (aucune clé API
+ * requise). Elle est chargée en différé (`loading="lazy"`) pour ne pas
+ * ralentir l'affichage de la page.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+
+const mapEmbedUrl =
+  'https://www.google.com/maps?q=' +
+  encodeURIComponent(
+    `${business.name}, ${business.address.street}, ${business.address.city}, ${business.address.province} ${business.address.postalCode}`
+  ) +
+  '&output=embed';
+---
+
+<Layout
+  title="Contact et heures d'ouverture | Yanexpro Mécanique Auto, Varennes"
+  description="Joignez Yanexpro Mécanique Auto : 772, boulevard Lionel-Boulet, Varennes (QC) J3X 1P7. Téléphone : 450 652-2121. Ouvert du lundi au vendredi — prenez rendez-vous dès aujourd'hui."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Parlons de votre véhicule"
+    intro="Un bruit suspect, un entretien à planifier, une remorque à réserver? Appelez-nous ou passez nous voir — nous sommes faciles à trouver et encore plus faciles à parler."
+  />
+
+  <section class="section" aria-label="Coordonnées et carte">
+    <div class="container contact-grid">
+      <!-- Coordonnées -->
+      <div class="contact-cards">
+        <a class="contact-card" href={`tel:${business.phone.e164}`}>
+          <span class="icon-chip"><Icon name="phone" size={24} /></span>
+          <div>
+            <h2>Téléphone</h2>
+            <p class="contact-value">{business.phone.display}</p>
+            <p>La façon la plus rapide de prendre rendez-vous.</p>
+          </div>
+        </a>
+
+        <a class="contact-card" href={`mailto:${business.email}`}>
+          <span class="icon-chip"><Icon name="mail" size={24} /></span>
+          <div>
+            <h2>Courriel</h2>
+            <p class="contact-value">{business.email}</p>
+            <p>Pour les demandes non urgentes — réponse durant les heures d’ouverture.</p>
+          </div>
+        </a>
+
+        <a
+          class="contact-card"
+          href={business.mapsUrl}
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="icon-chip"><Icon name="pin" size={24} /></span>
+          <div>
+            <h2>Adresse</h2>
+            <p class="contact-value">
+              {business.address.street}<br />
+              {business.address.city} ({business.address.province})
+              {business.address.postalCode}
+            </p>
+            <p>{business.address.landmark}.</p>
+          </div>
+        </a>
+
+        <div class="contact-card contact-card--static">
+          <span class="icon-chip"><Icon name="clock" size={24} /></span>
+          <div>
+            <h2>Heures d’ouverture</h2>
+            <dl class="hours-list">
+              {
+                business.hours.display.map((slot) => (
+                  <div>
+                    <dt>{slot.days}</dt>
+                    <dd>{slot.hours}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carte -->
+      <div class="map-wrap">
+        <iframe
+          src={mapEmbedUrl}
+          title={`Carte — ${business.name}, ${business.address.street}, ${business.address.city}`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+        ></iframe>
+        <a
+          class="btn btn--primary map-cta"
+          href={business.mapsUrl}
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="pin" size={18} /> Obtenir l’itinéraire
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-card {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    background: var(--color-bg-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    color: inherit;
+    transition: border-color 0.18s ease;
+  }
+
+  a.contact-card:hover {
+    border-color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .contact-card .icon-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.6rem;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-hover);
+  }
+
+  .contact-card h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .contact-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-heading);
+    margin-bottom: 0.35rem;
+  }
+
+  .contact-card p:last-child {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .hours-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .hours-list div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .hours-list dt {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .hours-list dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    text-align: right;
+  }
+
+  .map-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .map-wrap iframe {
+    width: 100%;
+    min-height: 420px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    /* La carte Google est claire : on tamise légèrement pour l'harmoniser
+       avec le thème sombre, sans nuire à la lisibilité. */
+    filter: saturate(0.9);
+  }
+
+  .map-cta {
+    align-self: flex-start;
+  }
+</style>

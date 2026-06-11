@@ -1,0 +1,133 @@
+---
+/**
+ * PAGE LOCATION DE REMORQUES — https://yanexpro.com/remorques/
+ *
+ * Les catégories de remorques proviennent de `src/data/business.ts`
+ * (tableau `trailerCategories`). Tarifs et disponibilités se font par
+ * téléphone : la page pousse donc vers l'appel.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { business, trailerCategories } from '../data/business';
+---
+
+<Layout
+  title="Location de remorques à Varennes | Yanexpro"
+  description="Gamme complète de remorques en location à Varennes : remorques utilitaires, fermées et plateformes pour transport de véhicules. Réservez par téléphone au 450 652-2121."
+>
+  <PageHero
+    eyebrow="Location de remorques"
+    title="La bonne remorque pour chaque projet"
+    intro="Déménagement, rénovations, transport d’un véhicule récréatif : Yanexpro met à votre disposition une gamme complète de remorques en location, directement au garage de Varennes."
+  />
+
+  <section class="section" aria-label="Types de remorques">
+    <div class="container">
+      <div class="card-grid">
+        {
+          trailerCategories.map((t) => (
+            <article class="card">
+              <span class="icon-chip">
+                <Icon name={t.icon} size={24} />
+              </span>
+              <h2 class="card-title">{t.title}</h2>
+              <p>{t.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised" aria-labelledby="comment-titre">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Comment ça fonctionne</span>
+        <h2 id="comment-titre">Réserver une remorque en 3 étapes</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <h3>Appelez-nous</h3>
+          <p>
+            Décrivez votre projet au {business.phone.display} : nous vous
+            recommandons la remorque appropriée et confirmons la disponibilité
+            et le tarif.
+          </p>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <h3>Passez au garage</h3>
+          <p>
+            Récupérez votre remorque au {business.address.street} à
+            {business.address.city}. Nous vérifions l’attelage et l’éclairage
+            avec vous avant le départ.
+          </p>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <h3>Roulez l’esprit tranquille</h3>
+          <p>
+            Nos remorques sont entretenues par nos propres mécaniciens — freins,
+            pneus et feux inspectés régulièrement.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Vérifiez la disponibilité dès maintenant"
+    text={`Un appel suffit pour réserver : ${business.phone.display}.`}
+  />
+</Layout>
+
+<style>
+  .card-title {
+    font-size: 1.15rem;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    counter-reset: step;
+  }
+
+  .steps li {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .steps h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .steps p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,16 @@
+# Dépendances installées par npm
+node_modules/
+
+# Site généré (reconstruit à chaque build — ne jamais le versionner)
+dist/
+
+# Fichiers générés par Astro
+.astro/
+
+# Fichiers d'environnement et journaux
+.env
+.env.*
+npm-debug.log*
+
+# Fichiers systèmes
+.DS_Store

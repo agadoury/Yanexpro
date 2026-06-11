@@ -1,0 +1,314 @@
+---
+/**
+ * PAGE D'ACCUEIL — https://yanexpro.com/
+ *
+ * Structure (de haut en bas) :
+ *   1. Héros : promesse principale + boutons d'appel et de contact.
+ *   2. Bandeau de confiance : certification et avantages clés.
+ *   3. Aperçu des services (ceux marqués `featured` dans business.ts).
+ *   4. Section « Notre garage » abrégée avec lien vers la page complète.
+ *   5. Bandeau remorques.
+ *   6. Coordonnées rapides + appel à l'action final.
+ */
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, services } from '../data/business';
+
+const featuredServices = services.filter((s) => s.featured);
+---
+
+<Layout
+  title="Yanexpro Mécanique Auto | Garage certifié à Varennes — entretien, freins, pneus, diagnostic"
+  description="Garage de mécanique automobile certifié Bumper to Bumper à Varennes. Entretien selon les normes des constructeurs, freins, suspension, pneus, diagnostic et location de remorques. ☎ 450 652-2121"
+>
+  <!-- 1. Héros -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">Garage certifié Bumper to Bumper · Varennes</span>
+        <h1>
+          Votre véhicule entre <span class="accent">de bonnes mains</span>
+        </h1>
+        <p>
+          {business.shortName} se spécialise dans l’entretien et la réparation
+          d’automobiles et de camions légers, dans le respect des normes et
+          directives des constructeurs — votre garantie demeure valide, sans
+          payer le prix du concessionnaire.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
+            <Icon name="phone" size={18} /> {business.phone.display}
+          </a>
+          <a class="btn btn--ghost" href="/services/">
+            Voir nos services <Icon name="arrow" size={18} />
+          </a>
+        </div>
+        <p class="hero-note">
+          <Icon name="pin" size={16} />
+          {business.address.landmark}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Avantages -->
+  <section class="section section--raised" aria-labelledby="avantages-titre">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pourquoi Yanexpro</span>
+        <h2 id="avantages-titre">Un service pensé pour vous simplifier la vie</h2>
+      </div>
+      <div class="card-grid">
+        {
+          business.amenities.map((a) => (
+            <div class="card">
+              <span class="icon-chip">
+                <Icon name={a.icon} size={24} />
+              </span>
+              <h3>{a.title}</h3>
+              <p>{a.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Services vedettes -->
+  <section class="section" aria-labelledby="services-titre">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Nos services</span>
+        <h2 id="services-titre">De l’entretien courant aux réparations majeures</h2>
+        <p>
+          Mécanique générale, diagnostic électronique, pneus et plus encore —
+          avec des équipements à la fine pointe de la technologie.
+        </p>
+      </div>
+      <div class="card-grid">
+        {
+          featuredServices.map((s) => (
+            <div class="card">
+              <span class="icon-chip">
+                <Icon name={s.icon} size={24} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.description}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="services-more">
+        <a class="btn btn--ghost" href="/services/">
+          Tous nos services <Icon name="arrow" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. Notre garage (résumé) -->
+  <section class="section section--raised" aria-labelledby="garage-titre">
+    <div class="container garage-split">
+      <div>
+        <span class="eyebrow">Notre garage</span>
+        <h2 id="garage-titre">
+          Une équipe d’ici, des standards de concessionnaire
+        </h2>
+        <p>
+          Situé dans le parc industriel de Varennes à proximité de la route 132,
+          notre atelier certifié Bumper to Bumper allie l’accueil d’un garage de
+          quartier à la rigueur des grandes bannières : pièces de qualité,
+          garantie reconnue partout au Canada et techniciens qui prennent le
+          temps de vous expliquer chaque intervention.
+        </p>
+        <a class="btn btn--ghost" href="/garage/">
+          Découvrir le garage <Icon name="arrow" size={18} />
+        </a>
+      </div>
+      <ul class="garage-points">
+        <li>
+          <Icon name="shield" size={22} />
+          <span>Certifié <strong>Bumper to Bumper</strong> — garantie pancanadienne sur pièces et main-d’œuvre</span>
+        </li>
+        <li>
+          <Icon name="car" size={22} />
+          <span><strong>Voitures de courtoisie</strong> pour rester mobile pendant les travaux</span>
+        </li>
+        <li>
+          <Icon name="coffee" size={22} />
+          <span>Salle d’attente avec <strong>Wi-Fi, café et postes de travail</strong></span>
+        </li>
+        <li>
+          <Icon name="diagnostic" size={22} />
+          <span>Équipements de diagnostic <strong>à la fine pointe</strong> de la technologie</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. Remorques -->
+  <section class="section" aria-labelledby="remorques-titre">
+    <div class="container">
+      <div class="trailer-band">
+        <div>
+          <span class="eyebrow">Aussi chez Yanexpro</span>
+          <h2 id="remorques-titre">Location de remorques</h2>
+          <p>
+            Déménagement, travaux, transport de véhicule récréatif : une gamme
+            complète de remorques vous attend, directement au garage.
+          </p>
+        </div>
+        <a class="btn btn--primary" href="/remorques/">
+          <Icon name="trailer" size={18} /> Voir les remorques
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Appel à l'action final -->
+  <CtaBand />
+</Layout>
+
+<style>
+  /* --- Héros --- */
+  .hero {
+    background:
+      radial-gradient(
+        70rem 35rem at 80% -30%,
+        var(--color-accent-soft),
+        transparent
+      ),
+      linear-gradient(180deg, var(--color-bg-deep), var(--color-bg));
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    padding-block: clamp(4rem, 10vw, 7.5rem);
+  }
+
+  .hero-copy {
+    max-width: 42rem;
+  }
+
+  .hero h1 {
+    font-size: var(--text-xl);
+  }
+
+  .hero .accent {
+    color: var(--color-accent-hover);
+  }
+
+  .hero p {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    max-width: 38rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .hero-note {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+    font-size: 0.9rem !important;
+    color: var(--color-text-muted);
+  }
+
+  .hero-note :global(svg) {
+    color: var(--color-accent-hover);
+    flex-shrink: 0;
+  }
+
+  /* --- Lien « tous les services » --- */
+  .services-more {
+    margin: 2rem 0 0;
+  }
+
+  /* --- Section garage --- */
+  .garage-split {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  @media (min-width: 820px) {
+    .garage-split {
+      grid-template-columns: 1.1fr 1fr;
+    }
+  }
+
+  .garage-split h2 {
+    font-size: var(--text-lg);
+  }
+
+  .garage-split p {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .garage-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .garage-points li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .garage-points strong {
+    color: var(--color-text);
+  }
+
+  .garage-points :global(svg) {
+    color: var(--color-accent-hover);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  /* --- Bandeau remorques --- */
+  .trailer-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    background: linear-gradient(
+      120deg,
+      var(--color-bg-raised),
+      var(--color-bg-deep)
+    );
+  }
+
+  .trailer-band h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    margin-bottom: 0.4rem;
+  }
+
+  .trailer-band p {
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 34rem;
+  }
+</style>

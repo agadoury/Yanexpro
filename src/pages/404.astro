@@ -1,0 +1,58 @@
+---
+/**
+ * PAGE 404 — affichée quand une adresse n'existe pas (ou plus).
+ * Oriente le visiteur vers les pages principales plutôt que de le perdre.
+ */
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+---
+
+<Layout
+  title="Page introuvable | Yanexpro Mécanique Auto"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez les services, le garage et les coordonnées de Yanexpro Mécanique Auto à Varennes."
+>
+  <section class="section notfound">
+    <div class="container">
+      <span class="eyebrow">Erreur 404</span>
+      <h1>Cette page a pris la route…</h1>
+      <p>
+        L’adresse demandée n’existe pas ou a été déplacée lors de la refonte du
+        site. Pas de panique : tout est encore là.
+      </p>
+      <div class="notfound-actions">
+        <a class="btn btn--primary" href="/">
+          Retour à l’accueil <Icon name="arrow" size={18} />
+        </a>
+        <a class="btn btn--ghost" href="/services/">Nos services</a>
+        <a class="btn btn--ghost" href={`tel:${business.phone.e164}`}>
+          <Icon name="phone" size={18} /> {business.phone.display}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .notfound {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .notfound h1 {
+    font-size: var(--text-lg);
+  }
+
+  .notfound p {
+    color: var(--color-text-muted);
+    max-width: 36rem;
+  }
+
+  .notfound-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>
