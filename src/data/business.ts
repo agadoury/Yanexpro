@@ -103,8 +103,64 @@ export const business = {
     },
   ],
 
+  /**
+   * Villes desservies — affichées dans le pied de page et transmises aux
+   * moteurs de recherche (référencement local « près de chez moi »).
+   */
+  areaServed: [
+    'Varennes',
+    'Boucherville',
+    'Sainte-Julie',
+    'Verchères',
+    'Saint-Amable',
+    'Contrecœur',
+  ],
+
   /** Réseaux sociaux — laissez le tableau vide si aucun. */
   socials: [] as { name: string; url: string }[],
+};
+
+/**
+ * ============================================================================
+ * BANDEAU D'ANNONCE SAISONNIER
+ * ============================================================================
+ * Bandeau affiché sous l'en-tête sur tout le site (ex. : saison des pneus).
+ * Pour l'activer : `enabled: true`, ajustez le message, reconstruisez.
+ * Le visiteur peut le fermer (mémorisé dans son navigateur) ; changer le
+ * message le fait réapparaître pour tout le monde.
+ * ============================================================================
+ */
+export const announcement = {
+  enabled: false,
+  message:
+    'La saison des pneus approche : réservez votre pose de pneus d’hiver dès maintenant.',
+  /** Bouton du bandeau — mettre `link: null` pour un message sans bouton. */
+  link: { label: 'Réserver', href: '/rendez-vous/' } as {
+    label: string;
+    href: string;
+  } | null,
+};
+
+/**
+ * ============================================================================
+ * MESURE D'AUDIENCE (Plausible Analytics)
+ * ============================================================================
+ * Statistiques de visites respectueuses de la vie privée (aucun témoin,
+ * conforme à la Loi 25 — pas de bannière de consentement requise).
+ *
+ * Activation :
+ *   1. Créez un compte sur https://plausible.io et ajoutez le site
+ *      « yanexpro.com ».
+ *   2. Passez `enabled` à `true` ci-dessous, reconstruisez.
+ *   3. (Recommandé) Dans Plausible → Site settings → Goals, créez les
+ *      objectifs « Appel téléphonique » et « Courriel » : le site envoie
+ *      déjà ces événements à chaque clic sur un numéro ou un courriel.
+ * ============================================================================
+ */
+export const analytics = {
+  enabled: false,
+  /** Domaine tel que déclaré dans Plausible. */
+  domain: 'yanexpro.com',
 };
 
 /**

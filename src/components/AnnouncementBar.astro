@@ -1,0 +1,123 @@
+---
+/**
+ * Bandeau d'annonce saisonnier (sous l'en-tête, sur toutes les pages).
+ *
+ * Contrôlé par `announcement` dans src/data/business.ts :
+ *   - `enabled: false` → rien n'est affiché (état par défaut) ;
+ *   - `enabled: true`  → bandeau visible, avec bouton optionnel.
+ *
+ * Le visiteur peut fermer le bandeau ; son choix est mémorisé dans son
+ * navigateur (localStorage), associé au texte du message : un NOUVEAU
+ * message refait donc apparaître le bandeau pour tout le monde.
+ */
+import { announcement } from '../data/business';
+import Icon from './Icon.astro';
+---
+
+{
+  announcement.enabled && (
+    <div class="announcement" data-message={announcement.message} hidden>
+      <div class="container announcement-inner">
+        <p>
+          <Icon name="snowflake" size={16} />
+          {announcement.message}
+        </p>
+        {announcement.link && (
+          <a class="announcement-link" href={announcement.link.href}>
+            {announcement.link.label}
+            <Icon name="arrow" size={14} />
+          </a>
+        )}
+        <button class="announcement-close" aria-label="Fermer l’annonce">
+          ✕
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .announcement {
+    background: linear-gradient(
+      100deg,
+      var(--color-accent),
+      var(--color-accent-hover)
+    );
+    color: #fff;
+  }
+
+  .announcement-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.55rem;
+    font-size: 0.92rem;
+  }
+
+  .announcement p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    flex: 1;
+    font-weight: 550;
+  }
+
+  .announcement p :global(svg) {
+    flex-shrink: 0;
+  }
+
+  .announcement-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
+  .announcement-close {
+    background: none;
+    border: 0;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+    opacity: 0.85;
+  }
+
+  .announcement-close:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .announcement-inner {
+      flex-wrap: wrap;
+      gap: 0.4rem 1rem;
+    }
+  }
+</style>
+
+{
+  announcement.enabled && (
+    <script>
+      // Affiche le bandeau sauf si CE message précis a déjà été fermé.
+      const bar = document.querySelector<HTMLElement>('.announcement');
+      if (bar) {
+        const key = 'annonce-fermee';
+        const message = bar.dataset.message ?? '';
+        if (localStorage.getItem(key) !== message) {
+          bar.hidden = false;
+        }
+        bar
+          .querySelector('.announcement-close')
+          ?.addEventListener('click', () => {
+            bar.hidden = true;
+            localStorage.setItem(key, message);
+          });
+      }
+    </script>
+  )
+}

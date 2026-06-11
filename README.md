@@ -49,6 +49,11 @@ pour Google) et hébergement gratuit possible.
 | Ajouter / retirer un service | `src/data/business.ts` → tableau `services` |
 | Catégories de remorques | `src/data/business.ts` → tableau `trailerCategories` |
 | Réservation en ligne (activer, types de RDV) | `src/data/business.ts` → objet `booking` (voir section dédiée) |
+| Bandeau d'annonce (saison des pneus…) | `src/data/business.ts` → objet `announcement` (`enabled: true` + message) |
+| Statistiques de visites | `src/data/business.ts` → objet `analytics` (voir instructions dans le fichier) |
+| Questions de la FAQ | `src/data/faq.ts` |
+| Villes desservies | `src/data/business.ts` → `business.areaServed` |
+| Image de partage réseaux sociaux | `public/og-image.png` (1200 × 630 px) |
 | Avantages (courtoisie, Wi-Fi…) | `src/data/business.ts` → tableau `amenities` |
 | Textes d'une page précise | `src/pages/<page>.astro` (le texte est en HTML lisible) |
 | Couleurs, polices, espacements | `src/styles/global.css` (variables en haut du fichier) |
@@ -140,11 +145,13 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
 ├── astro.config.mjs        ← URL du site, sitemap, redirections anciennes URL
 ├── public/                 ← fichiers copiés tels quels à la racine du site
 │   ├── favicon.svg         ← icône d'onglet (clé à molette rouge)
+│   ├── og-image.png        ← image d'aperçu pour les partages sociaux
 │   ├── robots.txt          ← directives moteurs de recherche + lien sitemap
 │   └── llms.txt            ← fiche de l'entreprise pour les assistants IA
 └── src/
     ├── data/
-    │   └── business.ts     ← ⭐ TOUTES les infos d'affaires (source unique)
+    │   ├── business.ts     ← ⭐ TOUTES les infos d'affaires (source unique)
+    │   └── faq.ts          ← questions/réponses de la page FAQ
     ├── styles/
     │   └── global.css      ← thème : couleurs, typo, boutons, cartes
     ├── layouts/
@@ -152,6 +159,7 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
     ├── components/
     │   ├── Header.astro    ← en-tête collant + menu mobile
     │   ├── Footer.astro    ← pied de page (coordonnées, heures, navigation)
+    │   ├── AnnouncementBar.astro ← bandeau d'annonce saisonnier
     │   ├── Icon.astro      ← jeu d'icônes SVG en ligne
     │   ├── PageHero.astro  ← en-tête des pages intérieures (H1)
     │   └── CtaBand.astro   ← bandeau « Appelez-nous » réutilisable
@@ -161,6 +169,7 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
         ├── garage.astro    ← /garage/
         ├── remorques.astro ← /remorques/
         ├── rendez-vous.astro ← /rendez-vous/ (réservation Cal.com)
+        ├── faq.astro       ← /faq/ (avec données structurées FAQPage)
         ├── contact.astro   ← /contact/
         └── 404.astro       ← page « introuvable »
 ```
@@ -177,7 +186,8 @@ service payant** :
 - **Données structurées schema.org** (`AutoRepair`/LocalBusiness) injectées
   sur chaque page par `src/layouts/Layout.astro` : nom, adresse, téléphone,
   heures, services et zone desservie — c'est ce qui alimente la fiche
-  enrichie de Google.
+  enrichie de Google. La page FAQ ajoute en plus le schéma `FAQPage`
+  (questions affichables directement dans les résultats de recherche).
 - **Balises uniques par page** : `<title>`, `meta description`, URL
   canonique, Open Graph (aperçus Facebook/LinkedIn) et Twitter Cards.
 - **`sitemap-index.xml` généré automatiquement** à chaque build et déclaré
@@ -247,9 +257,13 @@ quelques éléments méritent une validation par le propriétaire :
       génériques à ajuster selon la flotte réelle (dimensions, tarifs…).
 - [ ] **Photos réelles** du garage et de l'équipe : déposer les images dans
       `public/` (ou `src/assets/` pour optimisation automatique) et les
-      intégrer aux pages — un vrai plus pour la conversion.
-- [ ] **Image de partage** (`og:image`) : ajouter une photo 1200 × 630 px
-      dans `public/` et la déclarer dans `src/layouts/Layout.astro` pour de
-      plus beaux aperçus sur les réseaux sociaux.
+      intégrer aux pages — un vrai plus pour la conversion. L'image de
+      partage `public/og-image.png` (générique pour l'instant) gagnerait
+      aussi à être remplacée par une vraie photo (1200 × 630 px).
+- [ ] **Statistiques de visites** : créer le compte Plausible et activer
+      `analytics.enabled` dans `src/data/business.ts` (instructions dans le
+      fichier).
+- [ ] **Avis clients** : recueillir 3-4 avis Google (avec permission) pour
+      une future section « témoignages » sur l'accueil.
 - [ ] **Réseaux sociaux** : si l'entreprise a une page Facebook, l'ajouter à
       `business.socials` (elle apparaîtra aussi dans les données SEO).

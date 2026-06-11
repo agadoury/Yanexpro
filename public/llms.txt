@@ -38,4 +38,5 @@ et postes de travail, équipements de diagnostic à la fine pointe.
 - [Notre garage](https://yanexpro.com/garage/) : certification, équipe et expérience client
 - [Location de remorques](https://yanexpro.com/remorques/) : types de remorques et réservation
 - [Rendez-vous](https://yanexpro.com/rendez-vous/) : prise de rendez-vous en ligne (entretien, pneus, diagnostic, inspection, remorque)
+- [FAQ](https://yanexpro.com/faq/) : garantie constructeur hors concessionnaire, pneus d'hiver au Québec, voitures de courtoisie, inspection pré-achat
 - [Contact](https://yanexpro.com/contact/) : coordonnées, heures d'ouverture et carte

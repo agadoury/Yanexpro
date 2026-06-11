@@ -99,6 +99,25 @@ svg {
   border-radius: 4px;
 }
 
+/* Lien d'évitement : invisible jusqu'à ce qu'il reçoive le focus clavier,
+   il permet de sauter directement au contenu principal. */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+  text-decoration: none;
+}
+
 /* --- Utilitaires de mise en page ------------------------------------------- */
 .container {
   max-width: var(--container);

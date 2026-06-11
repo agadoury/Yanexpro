@@ -18,6 +18,10 @@ const year = new Date().getFullYear();
         Garage certifié Bumper to Bumper — entretien et réparation d’automobiles
         et de camions légers à Varennes.
       </p>
+      <p class="footer-area">
+        Au service de {business.areaServed.join(', ')} et de toute la Rive-Sud
+        de Montréal.
+      </p>
     </div>
 
     <div>
@@ -62,6 +66,7 @@ const year = new Date().getFullYear();
         <li><a href="/services/">Services</a></li>
         <li><a href="/garage/">Notre garage</a></li>
         <li><a href="/remorques/">Location de remorques</a></li>
+        <li><a href="/faq/">Questions fréquentes</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
     </div>
@@ -100,6 +105,13 @@ const year = new Date().getFullYear();
     color: var(--color-text-muted);
     font-size: 0.92rem;
     max-width: 22rem;
+  }
+
+  .footer-area {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    max-width: 22rem;
+    opacity: 0.85;
   }
 
   .footer-title {
