@@ -12,11 +12,12 @@ le référencement (Google **et** assistants IA).
 
 1. [Aperçu technique](#aperçu-technique)
 2. [Modifier le contenu (cas courants)](#modifier-le-contenu-cas-courants)
-3. [Travailler sur le site en local](#travailler-sur-le-site-en-local)
-4. [Structure du projet](#structure-du-projet)
-5. [SEO et découvrabilité par les IA](#seo-et-découvrabilité-par-les-ia)
-6. [Déploiement](#déploiement)
-7. [Points à vérifier / compléter](#points-à-vérifier--compléter)
+3. [Réservation en ligne (Cal.com)](#réservation-en-ligne-calcom)
+4. [Travailler sur le site en local](#travailler-sur-le-site-en-local)
+5. [Structure du projet](#structure-du-projet)
+6. [SEO et découvrabilité par les IA](#seo-et-découvrabilité-par-les-ia)
+7. [Déploiement](#déploiement)
+8. [Points à vérifier / compléter](#points-à-vérifier--compléter)
 
 ---
 
@@ -47,6 +48,7 @@ pour Google) et hébergement gratuit possible.
 | Heures d'ouverture | `src/data/business.ts` → `business.hours` (mettre à jour `display` **et** `schema`) |
 | Ajouter / retirer un service | `src/data/business.ts` → tableau `services` |
 | Catégories de remorques | `src/data/business.ts` → tableau `trailerCategories` |
+| Réservation en ligne (activer, types de RDV) | `src/data/business.ts` → objet `booking` (voir section dédiée) |
 | Avantages (courtoisie, Wi-Fi…) | `src/data/business.ts` → tableau `amenities` |
 | Textes d'une page précise | `src/pages/<page>.astro` (le texte est en HTML lisible) |
 | Couleurs, polices, espacements | `src/styles/global.css` (variables en haut du fichier) |
@@ -55,6 +57,66 @@ pour Google) et hébergement gratuit possible.
 
 Après toute modification : `npm run build` (ou poussez sur GitHub si le
 déploiement automatique est configuré — voir [Déploiement](#déploiement)).
+
+---
+
+## Réservation en ligne (Cal.com)
+
+Le site intègre la prise de rendez-vous en ligne via
+[Cal.com](https://cal.com) (offre gratuite suffisante). La page
+[`/rendez-vous/`](src/pages/rendez-vous.astro) propose au client de choisir
+un type de visite, puis d'envoyer une **demande** de plage horaire que le
+garage **confirme** (mode « requiert une confirmation » — aucun risque de
+double réservation des baies).
+
+### État actuel
+
+La réservation est **désactivée par défaut** (`booking.enabled = false`
+dans [`src/data/business.ts`](src/data/business.ts)) : le site reste
+« téléphone d'abord » et la page `/rendez-vous/` affiche un message
+« bientôt disponible ». Une fois le compte Cal.com configuré (ci-dessous),
+**une seule ligne à changer** active : la page de réservation, l'entrée
+« Rendez-vous » du menu, les boutons « Prendre rendez-vous » du héros, des
+bandeaux d'appel à l'action et de la page contact, ainsi que le signal
+`ReserveAction` dans les données SEO.
+
+### Configuration (une seule fois, ~30 minutes)
+
+1. **Créer le compte** sur [cal.com/signup](https://app.cal.com/signup)
+   avec le courriel du garage. Dans les réglages : langue **Français**,
+   fuseau horaire **America/Toronto**.
+2. **Définir les disponibilités** (*Availability*) en miroir des heures du
+   garage : lun–jeu 8 h–17 h, ven 8 h–12 h. ⚠ À garder synchronisées avec
+   `business.hours` si les heures changent.
+3. **Créer un type d'événement par entrée du tableau `booking.types`** de
+   `src/data/business.ts`. Le **slug Cal.com doit correspondre exactement**
+   au champ `slug` (entretien, pneus, diagnostic, inspection, remorque).
+   Pour chaque événement :
+   - durée suggérée : 1 h (ajustable — sert de bloc de triage) ;
+   - activer **« Requiert une confirmation »** (*Requires confirmation*) ;
+   - ajouter une question « Décrivez votre besoin / votre véhicule »
+     (champ texte) pour préparer la visite.
+4. **Connecter Google Calendar** (recommandé) : les demandes confirmées
+   apparaissent dans l'agenda du garage et les conflits sont bloqués.
+5. **Activer dans le code** : dans `src/data/business.ts`, inscrire le nom
+   d'utilisateur Cal.com dans `booking.calUsername` et passer
+   `booking.enabled` à `true`. Reconstruire / pousser.
+
+### Au quotidien
+
+Chaque demande de rendez-vous arrive **par courriel** (et dans
+l'application Cal.com) avec un bouton *Confirmer* / *Refuser*. Le client
+est avisé automatiquement dans les deux cas. **Important :** répondre aux
+demandes rapidement (idéalement < 2 h ouvrables) — c'est la promesse faite
+au client sur la page.
+
+### Notes techniques
+
+- Le script Cal.com n'est chargé **qu'au premier clic** sur un type de
+  rendez-vous : aucune pénalité de performance pour le reste du site.
+- Le calendrier s'affiche en thème sombre et en français
+  (`config: { theme: 'dark', locale: 'fr' }` dans
+  `src/pages/rendez-vous.astro`).
 
 ---
 
@@ -98,6 +160,7 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
         ├── services.astro  ← /services/
         ├── garage.astro    ← /garage/
         ├── remorques.astro ← /remorques/
+        ├── rendez-vous.astro ← /rendez-vous/ (réservation Cal.com)
         ├── contact.astro   ← /contact/
         └── 404.astro       ← page « introuvable »
 ```
@@ -175,6 +238,8 @@ hébergeur (Netlify et Cloudflare Pages détectent Astro automatiquement).
 Contenu repris de l'ancien site et des fiches publiques de l'entreprise —
 quelques éléments méritent une validation par le propriétaire :
 
+- [ ] **Réservation en ligne** : créer le compte Cal.com et activer
+      `booking.enabled` (voir [section dédiée](#réservation-en-ligne-calcom)).
 - [ ] **Heures d'ouverture** : l'ancien site indiquait « vendredi 8 h à 12 h
       hors saison des pneus » — confirmer et ajuster `business.hours`.
 - [ ] **Numéro civique** : 772 (utilisé ici) — certaines fiches indiquent 774.

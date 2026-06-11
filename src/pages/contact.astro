@@ -10,7 +10,7 @@
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { business } from '../data/business';
+import { business, booking } from '../data/business';
 
 const mapEmbedUrl =
   'https://www.google.com/maps?q=' +
@@ -34,6 +34,25 @@ const mapEmbedUrl =
     <div class="container contact-grid">
       <!-- Coordonnées -->
       <div class="contact-cards">
+        {
+          /* Carte « réservation en ligne » (si activée). */
+          booking.enabled && (
+            <a class="contact-card" href="/rendez-vous/">
+              <span class="icon-chip">
+                <Icon name="clock" size={24} />
+              </span>
+              <div>
+                <h2>Rendez-vous en ligne</h2>
+                <p class="contact-value">Réservez en deux minutes</p>
+                <p>
+                  Choisissez votre plage horaire en ligne — notre équipe
+                  confirme rapidement.
+                </p>
+              </div>
+            </a>
+          )
+        }
+
         <a class="contact-card" href={`tel:${business.phone.e164}`}>
           <span class="icon-chip"><Icon name="phone" size={24} /></span>
           <div>

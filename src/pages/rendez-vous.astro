@@ -1,0 +1,274 @@
+---
+/**
+ * PAGE RENDEZ-VOUS — https://yanexpro.com/rendez-vous/
+ *
+ * Prise de rendez-vous en ligne via Cal.com :
+ *   1. Le visiteur choisit un type de rendez-vous (cartes ci-dessous,
+ *      définies dans `booking.types` de src/data/business.ts).
+ *   2. Le calendrier Cal.com correspondant s'affiche sous les cartes.
+ *   3. Le client demande une plage horaire ; LE GARAGE CONFIRME ensuite
+ *      (mode « requiert une confirmation » — aucun risque de double
+ *      réservation des baies).
+ *
+ * Performance : le script Cal.com n'est chargé qu'au premier clic sur une
+ * carte — la page elle-même reste 100 % statique.
+ *
+ * Tant que `booking.enabled` est `false` (compte Cal.com pas encore créé),
+ * la page affiche les cartes en aperçu avec un message « bientôt
+ * disponible » et les coordonnées téléphoniques. Voir le README, section
+ * « Réservation en ligne », pour l'activation.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business, booking } from '../data/business';
+---
+
+<Layout
+  title="Prendre rendez-vous en ligne | Yanexpro Mécanique Auto, Varennes"
+  description="Réservez votre rendez-vous en ligne chez Yanexpro à Varennes : entretien, pneus, diagnostic, inspection pré-achat ou location de remorque. Confirmation rapide par notre équipe."
+>
+  <PageHero
+    eyebrow="Rendez-vous"
+    title="Réservez votre place à l’atelier"
+    intro="Choisissez le type de rendez-vous, sélectionnez la plage horaire qui vous convient et c’est tout : notre équipe confirme votre demande rapidement durant les heures d’ouverture."
+  />
+
+  <section class="section" aria-label="Choix du type de rendez-vous">
+    <div class="container">
+      {
+        !booking.enabled && (
+          <div class="booking-soon" role="status">
+            <Icon name="clock" size={22} />
+            <div>
+              <strong>La réservation en ligne arrive bientôt.</strong>
+              <p>
+                D’ici là, appelez-nous au{' '}
+                <a href={`tel:${business.phone.e164}`}>{business.phone.display}</a>{' '}
+                ou écrivez à{' '}
+                <a href={`mailto:${business.email}`}>{business.email}</a> — on
+                vous trouve une place rapidement.
+              </p>
+            </div>
+          </div>
+        )
+      }
+
+      <div class="section-head">
+        <span class="eyebrow">Étape 1</span>
+        <h2>Quel est le but de votre visite?</h2>
+      </div>
+
+      <div class:list={['card-grid', { 'is-disabled': !booking.enabled }]}>
+        {
+          booking.types.map((t) => (
+            <button
+              class="card booking-card"
+              type="button"
+              data-cal-slug={`${booking.calUsername}/${t.slug}`}
+              disabled={!booking.enabled}
+            >
+              <span class="icon-chip">
+                <Icon name={t.icon} size={24} />
+              </span>
+              <h3>{t.title}</h3>
+              <p>{t.description}</p>
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        booking.enabled && (
+          <div id="calendrier" class="booking-embed" hidden>
+            <div class="section-head">
+              <span class="eyebrow">Étape 2</span>
+              <h2>Choisissez votre plage horaire</h2>
+              <p>
+                <Icon name="shield" size={16} /> Votre demande sera confirmée
+                par notre équipe — vous recevrez un courriel dès que c’est
+                officiel.
+              </p>
+            </div>
+            {/* Cal.com remplit ce conteneur (embed « inline »). */}
+            <div id="cal-inline" class="cal-inline" />
+          </div>
+        )
+      }
+
+      <div class="booking-fallback">
+        <p>
+          Vous préférez parler à quelqu’un? Aucun problème :
+        </p>
+        <a class="btn btn--ghost" href={`tel:${business.phone.e164}`}>
+          <Icon name="phone" size={18} /> {business.phone.display}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Bandeau « bientôt disponible » (visible tant que booking.enabled = false). */
+  .booking-soon {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .booking-soon :global(svg) {
+    color: var(--color-accent-hover);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .booking-soon strong {
+    color: var(--color-heading);
+  }
+
+  .booking-soon p {
+    margin: 0.25rem 0 0;
+    color: var(--color-text-muted);
+  }
+
+  /* Cartes de type de rendez-vous : ce sont des <button> stylés en cartes. */
+  .booking-card {
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .booking-card[disabled] {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  .booking-card.is-selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+
+  .card-grid.is-disabled :global(.card:hover) {
+    transform: none;
+    border-color: var(--color-border);
+  }
+
+  /* Zone du calendrier Cal.com. */
+  .booking-embed {
+    margin-top: 3rem;
+    /* Évite que l'en-tête collant masque le titre lors du défilement
+       automatique après le choix d'un type de rendez-vous. */
+    scroll-margin-top: 5.5rem;
+  }
+
+  .booking-embed .section-head p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .booking-embed .section-head :global(svg) {
+    color: var(--color-accent-hover);
+  }
+
+  .cal-inline {
+    min-height: 40rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-bg-raised);
+  }
+
+  /* Rappel téléphonique en bas de page. */
+  .booking-fallback {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .booking-fallback p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>
+
+<script>
+  /**
+   * Intégration Cal.com (https://cal.com/docs — « Embed »).
+   *
+   * Au premier clic sur une carte :
+   *   1. on charge le script officiel Cal.com (une seule fois) ;
+   *   2. on affiche le calendrier du type choisi dans #cal-inline,
+   *      en thème sombre et en français.
+   * Aux clics suivants, on remplace simplement le calendrier affiché.
+   *
+   * Si la réservation n'est pas activée (`booking.enabled = false`), le
+   * conteneur #cal-inline n'existe pas et ce script ne fait rien.
+   */
+  let calLoaded = false;
+
+  /**
+   * Charge le script d'embarquement Cal.com (adapté du snippet officiel) :
+   * crée une file d'attente `window.Cal` qui mémorise les appels faits
+   * avant la fin du chargement, puis charge embed.js.
+   */
+  function loadCalScript() {
+    if (calLoaded) return;
+    calLoaded = true;
+    const w = window as any;
+    w.Cal =
+      w.Cal ||
+      function (...args: unknown[]) {
+        const cal = w.Cal;
+        if (!cal.loaded) {
+          cal.q = cal.q || [];
+          const s = document.createElement('script');
+          s.src = 'https://app.cal.com/embed/embed.js';
+          document.head.appendChild(s);
+          cal.loaded = true;
+        }
+        cal.q.push(args);
+      };
+    w.Cal('init', { origin: 'https://cal.com' });
+  }
+
+  /** Affiche le calendrier du type de rendez-vous choisi. */
+  function showCalendar(calLink: string) {
+    const container = document.getElementById('cal-inline');
+    if (!container) return; // réservation non activée
+    loadCalScript();
+    container.innerHTML = ''; // remplace le calendrier précédent
+    (window as any).Cal('inline', {
+      elementOrSelector: '#cal-inline',
+      calLink,
+      config: { theme: 'dark', locale: 'fr' },
+    });
+    const embed = document.getElementById('calendrier');
+    embed?.removeAttribute('hidden');
+    embed?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document
+    .querySelectorAll<HTMLButtonElement>('.booking-card')
+    .forEach((card) => {
+      card.addEventListener('click', () => {
+        document
+          .querySelectorAll('.booking-card.is-selected')
+          .forEach((c) => c.classList.remove('is-selected'));
+        card.classList.add('is-selected');
+        const slug = card.dataset.calSlug;
+        if (slug) showCalendar(slug);
+      });
+    });
+</script>

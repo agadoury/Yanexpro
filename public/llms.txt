@@ -37,4 +37,5 @@ et postes de travail, équipements de diagnostic à la fine pointe.
 - [Services](https://yanexpro.com/services/) : liste complète des services de mécanique
 - [Notre garage](https://yanexpro.com/garage/) : certification, équipe et expérience client
 - [Location de remorques](https://yanexpro.com/remorques/) : types de remorques et réservation
+- [Rendez-vous](https://yanexpro.com/rendez-vous/) : prise de rendez-vous en ligne (entretien, pneus, diagnostic, inspection, remorque)
 - [Contact](https://yanexpro.com/contact/) : coordonnées, heures d'ouverture et carte

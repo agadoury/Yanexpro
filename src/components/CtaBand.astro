@@ -3,7 +3,7 @@
  * Bandeau d'appel à l'action réutilisable (bas de page intérieure).
  * Props facultatives pour adapter le message selon la page.
  */
-import { business } from '../data/business';
+import { business, booking } from '../data/business';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -13,7 +13,9 @@ interface Props {
 
 const {
   title = 'Prêt à prendre rendez-vous?',
-  text = `Appelez-nous au ${business.phone.display} — nous trouvons une plage horaire qui vous convient.`,
+  text = booking.enabled
+    ? `Réservez en ligne en deux minutes, ou appelez-nous au ${business.phone.display}.`
+    : `Appelez-nous au ${business.phone.display} — nous trouvons une plage horaire qui vous convient.`,
 } = Astro.props;
 ---
 
@@ -25,12 +27,29 @@ const {
         <p>{text}</p>
       </div>
       <div class="cta-actions">
-        <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
-          <Icon name="phone" size={18} /> Appeler maintenant
-        </a>
-        <a class="btn btn--ghost" href="/contact/">
-          Nous joindre <Icon name="arrow" size={18} />
-        </a>
+        {
+          /* Réservation en ligne en action principale quand elle est
+             activée ; sinon, l'appel téléphonique reste à l'avant-plan. */
+          booking.enabled ? (
+            <>
+              <a class="btn btn--primary" href="/rendez-vous/">
+                <Icon name="clock" size={18} /> Prendre rendez-vous en ligne
+              </a>
+              <a class="btn btn--ghost" href={`tel:${business.phone.e164}`}>
+                <Icon name="phone" size={18} /> {business.phone.display}
+              </a>
+            </>
+          ) : (
+            <>
+              <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
+                <Icon name="phone" size={18} /> Appeler maintenant
+              </a>
+              <a class="btn btn--ghost" href="/contact/">
+                Nous joindre <Icon name="arrow" size={18} />
+              </a>
+            </>
+          )
+        }
       </div>
     </div>
   </div>

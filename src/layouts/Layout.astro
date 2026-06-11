@@ -23,7 +23,7 @@ import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { business, services } from '../data/business';
+import { business, booking, services } from '../data/business';
 
 interface Props {
   /** Titre de la page (balise <title> et réseaux sociaux). */
@@ -82,6 +82,15 @@ const jsonLd = {
       itemOffered: { '@type': 'Service', name: s.title, description: s.description },
     })),
   },
+  // Signale aux moteurs que la prise de rendez-vous en ligne est possible
+  // (uniquement quand la réservation Cal.com est activée).
+  ...(booking.enabled && {
+    potentialAction: {
+      '@type': 'ReserveAction',
+      target: new URL('/rendez-vous/', Astro.site).href,
+      name: 'Prendre rendez-vous en ligne',
+    },
+  }),
 };
 ---
 

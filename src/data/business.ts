@@ -208,6 +208,81 @@ export const services: Service[] = [
 
 /**
  * ============================================================================
+ * RÉSERVATION EN LIGNE (Cal.com)
+ * ============================================================================
+ * Le site intègre la prise de rendez-vous en ligne via Cal.com (gratuit).
+ * Marche à suivre complète : voir la section « Réservation en ligne » du
+ * README.md.
+ *
+ * En bref :
+ *   1. Créez le compte sur https://cal.com (langue : français,
+ *      fuseau : America/Toronto).
+ *   2. Créez un type d'événement par entrée du tableau `types` ci-dessous —
+ *      le slug Cal.com doit correspondre EXACTEMENT au champ `slug`.
+ *   3. Activez « Requiert une confirmation » sur chaque événement : le
+ *      client demande une plage, le garage confirme (évite les doubles
+ *      réservations d'ascenseurs/baies).
+ *   4. Inscrivez votre nom d'utilisateur Cal.com dans `calUsername`,
+ *      passez `enabled` à `true`, reconstruisez le site.
+ *
+ * Tant que `enabled` vaut `false`, le site reste exactement comme avant
+ * (appels téléphoniques d'abord) et la page /rendez-vous/ affiche un
+ * message « bientôt disponible ».
+ * ============================================================================
+ */
+export const booking = {
+  /** Passer à `true` une fois le compte Cal.com configuré. */
+  enabled: false,
+
+  /** Nom d'utilisateur Cal.com du garage (⚠ placeholder à remplacer). */
+  calUsername: 'yanexpro',
+
+  /**
+   * Types de rendez-vous proposés sur la page /rendez-vous/.
+   * `slug` = slug de l'événement dans Cal.com (doit correspondre exactement).
+   * `icon` = clé du composant src/components/Icon.astro.
+   */
+  types: [
+    {
+      slug: 'entretien',
+      title: 'Entretien périodique',
+      description:
+        'Vidange d’huile, filtres, inspection saisonnière et entretien selon le carnet du constructeur.',
+      icon: 'wrench',
+    },
+    {
+      slug: 'pneus',
+      title: 'Pneus et alignement',
+      description:
+        'Pose saisonnière, vente, entreposage et alignement. Réservez tôt en saison des pneus!',
+      icon: 'tire',
+    },
+    {
+      slug: 'diagnostic',
+      title: 'Diagnostic et réparation',
+      description:
+        'Témoin allumé, bruit suspect, perte de puissance : décrivez le problème, on s’en occupe.',
+      icon: 'diagnostic',
+    },
+    {
+      slug: 'inspection',
+      title: 'Inspection pré-achat',
+      description:
+        'Inspection complète d’un véhicule d’occasion avant l’achat, avec rapport détaillé.',
+      icon: 'clipboard',
+    },
+    {
+      slug: 'remorque',
+      title: 'Location de remorque',
+      description:
+        'Réservez votre remorque : indiquez le type souhaité et les dates de location.',
+      icon: 'trailer',
+    },
+  ],
+};
+
+/**
+ * ============================================================================
  * LOCATION DE REMORQUES
  * ============================================================================
  * Catégories affichées sur la page « Location de remorques ».

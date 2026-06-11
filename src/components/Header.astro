@@ -8,7 +8,7 @@
  * - Sur mobile, le menu se replie derrière un bouton hamburger
  *   (3 lignes de JavaScript, voir <script> en bas de fichier).
  */
-import { business } from '../data/business';
+import { business, booking } from '../data/business';
 import Icon from './Icon.astro';
 
 const navItems = [
@@ -16,6 +16,11 @@ const navItems = [
   { label: 'Services', href: '/services/' },
   { label: 'Notre garage', href: '/garage/' },
   { label: 'Remorques', href: '/remorques/' },
+  // L'entrée « Rendez-vous » apparaît quand la réservation en ligne est
+  // activée (booking.enabled dans src/data/business.ts).
+  ...(booking.enabled
+    ? [{ label: 'Rendez-vous', href: '/rendez-vous/' }]
+    : []),
   { label: 'Contact', href: '/contact/' },
 ];
 

@@ -13,7 +13,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business, services } from '../data/business';
+import { business, booking, services } from '../data/business';
 
 const featuredServices = services.filter((s) => s.featured);
 ---
@@ -37,12 +37,29 @@ const featuredServices = services.filter((s) => s.featured);
           payer le prix du concessionnaire.
         </p>
         <div class="hero-actions">
-          <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
-            <Icon name="phone" size={18} /> {business.phone.display}
-          </a>
-          <a class="btn btn--ghost" href="/services/">
-            Voir nos services <Icon name="arrow" size={18} />
-          </a>
+          {
+            /* Quand la réservation en ligne est activée, elle devient
+               l'action principale du héros ; le téléphone reste visible. */
+            booking.enabled ? (
+              <>
+                <a class="btn btn--primary" href="/rendez-vous/">
+                  <Icon name="clock" size={18} /> Prendre rendez-vous
+                </a>
+                <a class="btn btn--ghost" href={`tel:${business.phone.e164}`}>
+                  <Icon name="phone" size={18} /> {business.phone.display}
+                </a>
+              </>
+            ) : (
+              <>
+                <a class="btn btn--primary" href={`tel:${business.phone.e164}`}>
+                  <Icon name="phone" size={18} /> {business.phone.display}
+                </a>
+                <a class="btn btn--ghost" href="/services/">
+                  Voir nos services <Icon name="arrow" size={18} />
+                </a>
+              </>
+            )
+          }
         </div>
         <p class="hero-note">
           <Icon name="pin" size={16} />
