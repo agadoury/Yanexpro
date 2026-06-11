@@ -98,7 +98,7 @@ export const business = {
     {
       title: 'Rendez-vous rapides',
       description:
-        'Appelez-nous : nous trouvons une plage qui respecte votre horaire.',
+        'Réservez en ligne en deux minutes, ou appelez-nous : nous trouvons une plage qui respecte votre horaire.',
       icon: 'clock',
     },
   ],
@@ -257,7 +257,7 @@ export const services: Service[] = [
   {
     title: 'Location de remorques',
     description:
-      'Gamme complète de remorques en location pour vos déménagements, travaux et projets. Réservez par téléphone.',
+      'Gamme complète de remorques en location pour vos déménagements, travaux et projets. Réservez en ligne ou par téléphone.',
     icon: 'trailer',
   },
 ];
@@ -288,7 +288,7 @@ export const services: Service[] = [
  */
 export const booking = {
   /** Passer à `true` une fois le compte Cal.com configuré. */
-  enabled: false,
+  enabled: true,
 
   /** Nom d'utilisateur Cal.com du garage (⚠ placeholder à remplacer). */
   calUsername: 'yanexpro',
