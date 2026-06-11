@@ -14,10 +14,10 @@
   --color-bg-deep: #0a0d10;     /* pied de page, sections profondes */
   --color-border: #2a323b;      /* bordures discrètes */
 
-  /* Accent rouge signature (rappel Bumper to Bumper). */
-  --color-accent: #e23d28;
-  --color-accent-hover: #f25540;
-  --color-accent-soft: rgba(226, 61, 40, 0.12);
+  /* Rouge officiel du logo Yanexpro. */
+  --color-accent: #d7282e;
+  --color-accent-hover: #ee3f45;
+  --color-accent-soft: rgba(215, 40, 46, 0.12);
 
   /* Texte. */
   --color-text: #e8ecef;        /* texte principal */

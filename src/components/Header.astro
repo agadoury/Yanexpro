@@ -10,6 +10,7 @@
  */
 import { business, booking } from '../data/business';
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 
 const navItems = [
   { label: 'Accueil', href: '/' },
@@ -31,7 +32,7 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
 <header class="site-header">
   <div class="container header-inner">
     <a href="/" class="brand" aria-label={`${business.shortName} — Accueil`}>
-      <span class="brand-mark"><Icon name="wrench" size={20} /></span>
+      <Logo size={44} />
       <span class="brand-text">
         {business.shortName}<span class="brand-sub">Mécanique Auto</span>
       </span>
@@ -97,24 +98,16 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
   .brand:hover {
     text-decoration: none;
   }
-  .brand-mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 0.55rem;
-    background: var(--color-accent);
-    color: #fff;
-  }
+  /* Lettrage assorti au logo officiel : capitales grasses + sous-titre. */
   .brand-text {
     display: flex;
     flex-direction: column;
     line-height: 1.1;
-    font-weight: 800;
+    font-weight: 850;
     font-size: 1.15rem;
     color: var(--color-heading);
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
   .brand-sub {
     font-size: 0.68rem;

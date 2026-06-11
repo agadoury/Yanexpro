@@ -54,6 +54,7 @@ pour Google) et hébergement gratuit possible.
 | Questions de la FAQ | `src/data/faq.ts` |
 | Villes desservies | `src/data/business.ts` → `business.areaServed` |
 | Image de partage réseaux sociaux | `public/og-image.png` (1200 × 630 px) |
+| Logo (emblème vectoriel) | `src/components/Logo.astro` + `public/favicon.svg` (garder les deux en phase) |
 | Avantages (courtoisie, Wi-Fi…) | `src/data/business.ts` → tableau `amenities` |
 | Textes d'une page précise | `src/pages/<page>.astro` (le texte est en HTML lisible) |
 | Couleurs, polices, espacements | `src/styles/global.css` (variables en haut du fichier) |
@@ -144,7 +145,7 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
 ```
 ├── astro.config.mjs        ← URL du site, sitemap, redirections anciennes URL
 ├── public/                 ← fichiers copiés tels quels à la racine du site
-│   ├── favicon.svg         ← icône d'onglet (clé à molette rouge)
+│   ├── favicon.svg         ← icône d'onglet (emblème Yanexpro)
 │   ├── og-image.png        ← image d'aperçu pour les partages sociaux
 │   ├── robots.txt          ← directives moteurs de recherche + lien sitemap
 │   └── llms.txt            ← fiche de l'entreprise pour les assistants IA
@@ -159,6 +160,7 @@ npm run preview    # 4. prévisualiser dist/ tel qu'il sera en production
     ├── components/
     │   ├── Header.astro    ← en-tête collant + menu mobile
     │   ├── Footer.astro    ← pied de page (coordonnées, heures, navigation)
+    │   ├── Logo.astro      ← emblème Yanexpro (recréation vectorielle)
     │   ├── AnnouncementBar.astro ← bandeau d'annonce saisonnier
     │   ├── Icon.astro      ← jeu d'icônes SVG en ligne
     │   ├── PageHero.astro  ← en-tête des pages intérieures (H1)

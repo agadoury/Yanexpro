@@ -1,0 +1,93 @@
+---
+/**
+ * Emblème Yanexpro — recréation vectorielle du logo officiel :
+ * engrenage rouge contenant une voiture de profil, avec le « Y » niché
+ * dans l'encoche en haut à droite.
+ *
+ * Vectoriel (SVG) : net à toutes les tailles, et les évidements sont
+ * réellement transparents — l'emblème fonctionne sur fond sombre comme
+ * sur fond clair, contrairement au PNG original sur fond blanc.
+ *
+ * Usage : <Logo size={40} />
+ * La couleur par défaut est le rouge officiel de la marque ; passer
+ * `color` pour une variante (ex. monochrome blanc pour de l'impression).
+ */
+interface Props {
+  size?: number;
+  color?: string;
+}
+
+const { size = 40, color = '#d7282e' } = Astro.props;
+
+/* Identifiant unique du masque pour éviter les collisions quand
+   l'emblème apparaît plusieurs fois sur la même page (en-tête + pied). */
+const maskId = `y-notch-${Math.random().toString(36).slice(2, 8)}`;
+
+/* Silhouette du « Y » — réutilisée pour le masque (version dilatée qui
+   creuse l'encoche dans l'engrenage) et pour la lettre elle-même. */
+const yPath = 'M76 8 h13 l4.5 8 4.5 -8 h13 l-11.5 20 v15 h-11 v-15 z';
+
+/* Angles des dents : pas de 36°, les positions 36° et 72° sont laissées
+   libres — c'est là que le « Y » prend place. */
+const teeth = [0, 108, 144, 180, 216, 252, 288, 324];
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 120 120"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <defs>
+    <mask id={maskId}>
+      <rect width="120" height="120" fill="white"></rect>
+      <path
+        d={yPath}
+        fill="black"
+        stroke="black"
+        stroke-width="16"
+        stroke-linejoin="round"></path>
+    </mask>
+  </defs>
+
+  <!-- Engrenage (anneau + dents), encoché autour du Y par le masque -->
+  <g mask={`url(#${maskId})`}>
+    <circle cx="52" cy="68" r="39" fill="none" stroke={color} stroke-width="14"
+    ></circle>
+    <g fill={color}>
+      {
+        teeth.map((angle) => (
+          <rect
+            x="44"
+            y="8"
+            width="16"
+            height="16"
+            rx="3"
+            transform={`rotate(${angle} 52 68)`}
+          />
+        ))
+      }
+    </g>
+  </g>
+
+  <!-- Voiture de profil (fenêtres et jantes évidées) -->
+  <path
+    fill={color}
+    fill-rule="evenodd"
+    d="M22 87 q1 -11 13 -13 l8 -10 q4 -5 10 -5 h13 q7 0 11 5 l8 10 q11 2 12 13 z
+       M46 62 l-7 9 h11 v-9 z
+       M54 62 v9 h14 l-7 -8 q-1 -1 -3 -1 z"
+  ></path>
+  <g fill={color} fill-rule="evenodd">
+    <path
+      d="M37 78 a7.5 7.5 0 1 0 0.001 0 z M37 82.5 a3 3 0 1 1 -0.001 0 z"
+    ></path>
+    <path
+      d="M69 78 a7.5 7.5 0 1 0 0.001 0 z M69 82.5 a3 3 0 1 1 -0.001 0 z"
+    ></path>
+  </g>
+
+  <!-- Le Y de Yanexpro -->
+  <path fill={color} d={yPath}></path>
+</svg>
